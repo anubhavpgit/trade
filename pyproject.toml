@@ -45,6 +45,7 @@ dependencies = [
     "weasyprint>=60.0",
     "py-vollib>=1.0.1",
     "mibian>=0.1.3",
+    "yfinance>=0.2.0",
 ]
 
 [project.optional-dependencies]
@@ -67,6 +68,7 @@ rl = [
 trading-bot = "src.main:main"
 run-dashboard = "src.dashboard.app:run_server"
 generate-report = "src.reporting.generator:generate_daily_report"
+seed-demo-data = "src.data.seed_demo_data:seed_database"
 
 [tool.setuptools.packages.find]
 where = ["."]

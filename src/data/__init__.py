@@ -8,6 +8,8 @@ from src.data.models import (
     OptionChain,
     IVSurface,
 )
+from src.data.database import DatabaseManager, get_db_manager
+from src.data.demo_data_service import DemoDataService, get_demo_service
 
 __all__ = [
     "MarketDataService",
@@ -16,4 +18,8 @@ __all__ = [
     "MarketSnapshot",
     "OptionChain",
     "IVSurface",
+    "DatabaseManager",
+    "get_db_manager",
+    "DemoDataService",
+    "get_demo_service",
 ]

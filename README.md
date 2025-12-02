@@ -13,7 +13,7 @@ A comprehensive system for:
 
 ```
 ├── src/
-│   ├── data/           # Market data ingestion and storage
+│   ├── data/           # Market data ingestion, database, demo service
 │   ├── analytics/      # Pricing, Greeks, VaR/ES, scenarios
 │   ├── agent/          # Hedging decision engine
 │   ├── execution/      # Paper/live trading execution
@@ -22,12 +22,59 @@ A comprehensive system for:
 │   └── utils/          # Helpers and utilities
 ├── tests/              # Test suite
 ├── configs/            # Configuration files
-├── data/               # Data storage
+├── data/               # SQLite database and data storage
 ├── reports/            # Generated reports
 └── notebooks/          # Analysis notebooks
 ```
 
+## Quick Start (Demo Mode)
+
+```bash
+# 1. Clone and enter the repository
+cd trading_bot
+
+# 2. Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# 3. Install the package
+pip install -e .
+
+# 4. Seed the database with demo data
+python -m src.data.seed_demo_data
+# OR use the CLI command:
+seed-demo-data
+
+# 5. Launch the dashboard
+python -m src.dashboard.app
+# OR use the CLI command:
+run-dashboard
+
+# 6. Open browser to http://127.0.0.1:8050
+```
+
+## Demo Data
+
+The demo system uses:
+- **SPY Historical Prices**: Downloaded from Yahoo Finance (June 2023 - present)
+- **VIX Historical Data**: Downloaded from Yahoo Finance for IV context
+- **Synthetic Option Chains**: Generated using Black-Scholes with realistic IV smile
+- **Sample Portfolio**: Short straddle + protective put + stock hedge
+- **Risk Snapshots**: 200 historical snapshots for time series charts
+
+Data sources referenced:
+- [Yahoo Finance](https://finance.yahoo.com/) - Free stock/ETF data
+- [CBOE Historical Data](https://www.cboe.com/us/options/market_statistics/historical_data/) - VIX archives
+- [FRED VIX Data](https://fred.stlouisfed.org/series/VIXCLS) - Alternative VIX source
+
 ## Features
+
+### Data Layer
+- SQLite database with SQLAlchemy ORM
+- Historical price and volatility storage
+- Option chain snapshots
+- Position and trade tracking
+- Risk metrics time series
 
 ### Analytics Layer
 - Black-Scholes option pricing
@@ -50,9 +97,18 @@ A comprehensive system for:
 - Position and P&L tracking
 - Order management
 
+### Dashboard
+- Real-time portfolio metrics
+- Greeks time series with delta bands
+- P&L stress surface (3D)
+- Implied volatility surface (3D)
+- Cumulative P&L chart
+- Active positions table
+- Recent trades and alerts feed
+- Agent status and next action
+
 ### Reporting Layer
 - Daily HTML risk digest
-- Real-time Dash dashboard
 - Alert system with multiple channels
 
 ## Installation
@@ -87,28 +143,14 @@ cp .env.example .env
 - Risk parameters
 - Agent configuration
 
-## Usage
+## CLI Commands
 
-### Run the Trading System
-```bash
-trading-bot
-```
-
-### Run the Dashboard
-```bash
-run-dashboard
-# Open http://127.0.0.1:8050 in your browser
-```
-
-### Generate Daily Report
-```bash
-generate-report
-```
-
-### Run Tests
-```bash
-pytest
-```
+| Command | Description |
+|---------|-------------|
+| `trading-bot` | Run the main trading system |
+| `run-dashboard` | Start the Dash monitoring dashboard |
+| `generate-report` | Generate daily risk digest report |
+| `seed-demo-data` | Populate database with demo data |
 
 ## Risk Parameters
 
@@ -131,10 +173,20 @@ pytest
 - [x] Paper trading execution
 - [x] Dashboard UI
 - [x] Report generation
-- [ ] Database integration
+- [x] SQLite database integration
+- [x] Demo data system
 - [ ] RL overlay
 - [ ] Backtesting framework
 - [ ] Live trading support
+
+## Screenshots
+
+Dashboard displays:
+- Portfolio value, P&L, VaR, drawdown
+- Real-time Greeks (Delta, Gamma, Theta, Vega)
+- IV percentile and realized volatility
+- Interactive 3D stress test and IV surfaces
+- Position details and activity feed
 
 ## License
 
